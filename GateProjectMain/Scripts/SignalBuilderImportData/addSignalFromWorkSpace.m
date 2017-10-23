@@ -1,62 +1,135 @@
 %CONSTANTS
 SAMPLE_TIME = 0.001; 
 NUMBER_CYCLES = 2;
-TOTAL_TIME = 60;
-HIGH = 1010;
+TOTAL_TIME = 120;
+HIGH = 1023;
 LOW = 23;
+SIDE_DELAY = 3;
 
 TIME = transpose(0:0.001:TOTAL_TIME);
 
-%Cycle1
-start1 = 3.88;
-finish1 = 19;
-%Cycle2
-start2 = 23;
-finish2 = 38;
-%Cycle3
-start3 = 43;
-finish3 = 58;
-%Cycle4
-start4 = 79;
+TEST_CASE_NUM = 14;
+
+start1 = 21.3;
+finish1 = 36.1;
+start2 = 40.02;
+finish2 = 55.5;
+start3 = 62.08;
+finish3 = 76.975;
+start4 = 79.08;
 finish4 = 94;
 
-start = [start1, start2, start3, start4];
-start = start.*(1/SAMPLE_TIME);
-finish = [finish1, finish2, finish3, finish4];
-finish = finish.*(1/SAMPLE_TIME);
+%% Right Data
+%Cycle1
+start1right = start1 + SIDE_DELAY;
+finish1right = finish1;
+%Cycle2
+start2right = start2;
+finish2right = finish2 - SIDE_DELAY;
+%Cycle3
+start3right = start3 + SIDE_DELAY;
+finish3right = finish3;
+%Cycle4
+start4right = start4;
+finish4right = finish4 - SIDE_DELAY;
 
+startRight = [start1right, start2right, start3right, start4right];
+startRight = startRight.*(1/SAMPLE_TIME);
 
-Signal = HIGH*ones(start(1),1);
+finishRight = [finish1right, finish2right, finish3right, finish4right];
+finishRight = finishRight.*(1/SAMPLE_TIME);
+
+SignalRight = HIGH*ones(startRight(1),1);
+
 for c=1:NUMBER_CYCLES
 
-    counter = 0;
-    tempSignal = ones((finish(c) - start(c)),1);
-    tempValue = LOW;
+    counterRight = 0;
     
-    for i=1:(finish(c) - start(c))
+    tempSignalRight = ones((finishRight(c) - startRight(c)),1);
+    
+    tempValueRight = LOW;
 
-       if counter > 30
+    
+    for i=1:(finishRight(c) - startRight(c))
+
+       if counterRight > 110
            %toggle value
-           if tempValue == HIGH
-               tempValue = LOW;
+           if tempValueRight == HIGH
+               tempValueRight = LOW;
            else
-               tempValue = HIGH;
+               tempValueRight = HIGH;
            end
-           counter = 0;
+           counterRight = 0;
        else
-           counter = counter + 1;
+           counterRight = counterRight + 1;
        end
-       tempSignal(i) = tempValue;
+       tempSignalRight(i) = tempValueRight;
     end
 
-    Signal = cat(1, Signal, tempSignal);
+    SignalRight = cat(1, SignalRight, tempSignalRight);
     
     if c < NUMBER_CYCLES
-        Signal = cat(1, Signal, LOW*ones((start(c+1) - finish(c)),1));
+        SignalRight = cat(1, SignalRight, LOW*ones((startRight(c+1) - finishRight(c)),1));
     end
 end
-Signal = cat(1, Signal, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 ...
-    - (finish(NUMBER_CYCLES)),1));
 
+%% Left Data
+%Cycle1
+start1left = start1;
+finish1left = finish1 - SIDE_DELAY;
+%Cycle2
+start2left = start2 + SIDE_DELAY;
+finish2left = finish2;
+%Cycle3
+start3left = start3;
+finish3left = finish3 - SIDE_DELAY;
+%Cycle4
+start4left = start4 + SIDE_DELAY;
+finish4left = finish4;
 
-signalbuilder('gate_V22_2016a/HardwareInputWrapper/MIL/Signal Builder', 'appendsignal',TIME, Signal, 'Signal5');
+startLeft = [start1left, start2left, start3left, start4left];
+startLeft = startLeft.*(1/SAMPLE_TIME);
+
+finishLeft = [finish1left, finish2left, finish3left, finish4left];
+finishLeft = finishLeft.*(1/SAMPLE_TIME);
+
+SignalLeft = HIGH*ones(startLeft(1),1);
+
+for c=1:NUMBER_CYCLES
+    counterLeft = 0;
+    
+    tempSignalLeft = ones((finishLeft(c) - startLeft(c)),1);
+    
+    tempValueLeft = LOW;
+    
+    for i=1:(finishLeft(c) - startLeft(c))
+
+       if counterLeft > 110
+           %toggle value
+           if tempValueLeft == HIGH
+               tempValueLeft = LOW;
+           else
+               tempValueLeft = HIGH;
+           end
+           counterLeft = 0;
+       else
+           counterLeft = counterLeft + 1;
+       end
+       tempSignalLeft(i) = tempValueLeft;
+    end
+    
+    SignalLeft = cat(1, SignalLeft, tempSignalLeft);  
+    if c < NUMBER_CYCLES
+        SignalLeft = cat(1, SignalLeft, LOW*ones((startLeft(c+1) - finishLeft(c)),1));
+    end
+end
+
+SignalRight = cat(1, SignalRight, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 ...
+    - (finishRight(NUMBER_CYCLES)),1));
+
+SignalLeft = cat(1, SignalLeft, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 ...
+    - (finishLeft(NUMBER_CYCLES)),1));
+
+signalbuilder('SignalBuilderFiller/Signal Builder', 'set', 'rightSpeedRaw', TEST_CASE_NUM, TIME, SignalRight);
+signalbuilder('SignalBuilderFiller/Signal Builder', 'set', 'leftSpeedRaw', TEST_CASE_NUM, TIME, SignalLeft);
+%signalbuilder('SignalBuilderFiller/Signal Builder', 'appendsignal',TIME, Signal, 'Signal5');

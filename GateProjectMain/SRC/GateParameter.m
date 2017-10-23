@@ -19,6 +19,7 @@ OPENING = uint8(11);
 CLOSED = uint8(12);
 CLOSING = uint8(13);
 OPEN = uint8(14);
+INIT = uint8(15);
 
 %Keypad Char ASCII%
 CHAR0 = uint8(48);
