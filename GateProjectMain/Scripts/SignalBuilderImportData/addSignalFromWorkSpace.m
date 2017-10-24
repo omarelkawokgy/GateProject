@@ -1,6 +1,6 @@
 %CONSTANTS
 SAMPLE_TIME = 0.001; 
-NUMBER_CYCLES = 2;
+NUMBER_CYCLES = 4;
 TOTAL_TIME = 120;
 HIGH = 1023;
 LOW = 23;
@@ -8,14 +8,14 @@ SIDE_DELAY = 3;
 
 TIME = transpose(0:0.001:TOTAL_TIME);
 
-TEST_CASE_NUM = 14;
+TEST_CASE_NUM = 10;
 
-start1 = 21.3;
-finish1 = 36.1;
-start2 = 40.02;
-finish2 = 55.5;
-start3 = 62.08;
-finish3 = 76.975;
+start1 = 18;
+finish1 = 33;
+start2 = 37.1;
+finish2 = 52.3;
+start3 = 62.1;
+finish3 = 77.0;
 start4 = 79.08;
 finish4 = 94;
 
@@ -45,7 +45,7 @@ for c=1:NUMBER_CYCLES
 
     counterRight = 0;
     
-    tempSignalRight = ones((finishRight(c) - startRight(c)),1);
+    tempSignalRight = ones(round((finishRight(c) - startRight(c))),1);
     
     tempValueRight = LOW;
 
@@ -69,7 +69,7 @@ for c=1:NUMBER_CYCLES
     SignalRight = cat(1, SignalRight, tempSignalRight);
     
     if c < NUMBER_CYCLES
-        SignalRight = cat(1, SignalRight, LOW*ones((startRight(c+1) - finishRight(c)),1));
+        SignalRight = cat(1, SignalRight, LOW*ones(round((startRight(c+1) - finishRight(c))),1));
     end
 end
 
@@ -98,7 +98,7 @@ SignalLeft = HIGH*ones(startLeft(1),1);
 for c=1:NUMBER_CYCLES
     counterLeft = 0;
     
-    tempSignalLeft = ones((finishLeft(c) - startLeft(c)),1);
+    tempSignalLeft = ones(round((finishLeft(c) - startLeft(c))),1);
     
     tempValueLeft = LOW;
     
@@ -120,7 +120,7 @@ for c=1:NUMBER_CYCLES
     
     SignalLeft = cat(1, SignalLeft, tempSignalLeft);  
     if c < NUMBER_CYCLES
-        SignalLeft = cat(1, SignalLeft, LOW*ones((startLeft(c+1) - finishLeft(c)),1));
+        SignalLeft = cat(1, SignalLeft, LOW*ones(round((startLeft(c+1) - finishLeft(c))),1));
     end
 end
 
@@ -130,6 +130,6 @@ SignalRight = cat(1, SignalRight, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 .
 SignalLeft = cat(1, SignalLeft, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 ...
     - (finishLeft(NUMBER_CYCLES)),1));
 
-signalbuilder('SignalBuilderFiller/Signal Builder', 'set', 'rightSpeedRaw', TEST_CASE_NUM, TIME, SignalRight);
-signalbuilder('SignalBuilderFiller/Signal Builder', 'set', 'leftSpeedRaw', TEST_CASE_NUM, TIME, SignalLeft);
+signalbuilder('gate_V32_2016a_Sim/Gate/HardwareInputWrapper/MIL_Gate_B/Signal Builder', 'set', 'rightSpeedRaw', TEST_CASE_NUM, TIME, SignalRight);
+signalbuilder('gate_V32_2016a_Sim/Gate/HardwareInputWrapper/MIL_Gate_B/Signal Builder', 'set', 'leftSpeedRaw', TEST_CASE_NUM, TIME, SignalLeft);
 %signalbuilder('SignalBuilderFiller/Signal Builder', 'appendsignal',TIME, Signal, 'Signal5');
