@@ -8,13 +8,19 @@ PASS_INCOMPLETE = uint8(8);
 TIMEOUT = uint8(9);
 
 %Timers%
-oneSec = uint16(1000);
-OPEN_TIMEOUT = uint32(60*oneSec);
-OPEN_SIDE_VALUE = uint16(3*oneSec);
-CLOSE_SIDE_VALUE = single(2.95*oneSec);
-PASS_TIMEOUT = uint16(10*oneSec);
+ONE_SEC = uint16(1000);
+OPEN_TIMEOUT = uint32(60*ONE_SEC);
+OPEN_SIDE_VALUE = uint16(3*ONE_SEC);
+CLOSE_SIDE_VALUE = single(2.95*ONE_SEC);
+PASS_TIMEOUT = uint16(10*ONE_SEC);
+MOVING_TIMER = uint32(30*ONE_SEC);
 
-%Motor States%
+
+%Current Calib%
+CURRENT_STABLE_TIMER = uint8(200);
+CURRENT_THRESH = uint16(1000);
+
+%Motor and Gate States%
 OPENING = uint8(11);
 CLOSED = uint8(12);
 CLOSING = uint8(13);
