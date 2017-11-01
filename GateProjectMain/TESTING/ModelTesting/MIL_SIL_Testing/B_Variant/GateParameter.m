@@ -1,3 +1,5 @@
+addpath('..\..\..\..\SRC');
+
 %Verification states%
 OPENING_ACTIVE = uint8(1);
 WRONG_PASSWORD = uint8(2);
