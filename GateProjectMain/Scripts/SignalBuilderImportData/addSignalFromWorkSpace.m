@@ -1,22 +1,23 @@
 %CONSTANTS
 SAMPLE_TIME = 0.001; 
-NUMBER_CYCLES = 4;
+NUMBER_CYCLES = 2;
 TOTAL_TIME = 120;
 HIGH = 1023;
 LOW = 23;
 SIDE_DELAY = 3;
+SignalBuilderPath = 'GateTestHarness_C/MIL_Gate_C/Signal Builder';
 
 TIME = transpose(0:0.001:TOTAL_TIME);
 
-TEST_CASE_NUM = 10;
+TEST_CASE_NUM = 5;
 
-start1 = 18;
-finish1 = 33;
-start2 = 37.1;
-finish2 = 52.3;
-start3 = 62.1;
-finish3 = 77.0;
-start4 = 79.08;
+start1 = 3.9;
+finish1 = 37;
+start2 = 45;
+finish2 = 60;
+start3 = 43.5;
+finish3 = 57.981;
+start4 = 79.2;
 finish4 = 94;
 
 %% Right Data
@@ -130,6 +131,6 @@ SignalRight = cat(1, SignalRight, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 .
 SignalLeft = cat(1, SignalLeft, HIGH*ones((TOTAL_TIME * (1/SAMPLE_TIME)) + 1 ...
     - (finishLeft(NUMBER_CYCLES)),1));
 
-signalbuilder('gate_V32_2016a_Sim/Gate/HardwareInputWrapper/MIL_Gate_B/Signal Builder', 'set', 'rightSpeedRaw', TEST_CASE_NUM, TIME, SignalRight);
-signalbuilder('gate_V32_2016a_Sim/Gate/HardwareInputWrapper/MIL_Gate_B/Signal Builder', 'set', 'leftSpeedRaw', TEST_CASE_NUM, TIME, SignalLeft);
+signalbuilder(SignalBuilderPath, 'set', 'rightSpeedRaw', TEST_CASE_NUM, TIME, SignalRight);
+signalbuilder(SignalBuilderPath, 'set', 'leftSpeedRaw', TEST_CASE_NUM, TIME, SignalLeft);
 %signalbuilder('SignalBuilderFiller/Signal Builder', 'appendsignal',TIME, Signal, 'Signal5');
