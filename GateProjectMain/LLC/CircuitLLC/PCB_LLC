@@ -2,3 +2,5 @@ Transistor should be tested separatly before welding into the PCB board.
 emitter pin and collector may vary even if they are named both as 2N 2222A, so separate test will make sure which pin is the emitter.
 resistance of the base pin may also vary from one transistor to another. for example it worked before on 10KOhm resistance now 
 its not working on such high resistance and instead it worked on 2K
+
+arduino from china break so easly soo not recommended at all
